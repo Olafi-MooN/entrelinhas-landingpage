@@ -780,7 +780,9 @@
 
       <!-- Form -->
       <div data-aos="fade-left" data-aos-delay="100">
-        <form id="contact-form" class="bg-white rounded-3xl p-8 shadow-sm border border-creme-dark" onsubmit="handleSubmit(event)">
+        <form id="contact-form" name="agendamento" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="bg-white rounded-3xl p-8 shadow-sm border border-creme-dark">
+          <input type="hidden" name="form-name" value="agendamento" />
+          <p class="hidden"><input name="bot-field" /></p>
           <div class="space-y-5">
             <div>
               <label class="form-label" for="name">Nome completo</label>
@@ -816,9 +818,6 @@
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
             Agendar Consulta
           </button>
-          <p id="form-success" class="hidden mt-4 text-center text-verde font-medium text-sm">
-            ✓ Mensagem enviada! Entraremos em contato em breve.
-          </p>
         </form>
       </div>
     </div>
@@ -959,19 +958,6 @@
       });
     });
 
-    // Form submit (placeholder — integrar EmailJS ou Formspree)
-    function handleSubmit(e) {
-      e.preventDefault();
-      const btn = e.target.querySelector('button[type="submit"]');
-      btn.textContent = 'Enviando...';
-      btn.disabled = true;
-      setTimeout(() => {
-        document.getElementById('form-success').classList.remove('hidden');
-        e.target.reset();
-        btn.innerHTML = '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg> Agendar Consulta';
-        btn.disabled = false;
-      }, 1200);
-    }
   </script>
 </body>
 </html>
