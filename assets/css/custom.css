@@ -1,0 +1,256 @@
+/* ============================================================
+   Entrelinhas — Espaço Terapêutico | Custom Styles
+   Paleta: #912c2c (vinho) | #576b53 (verde) | #bc8769 (terracota) | #efe9e1 (creme)
+   ============================================================ */
+
+/* ---------- Base ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #efe9e1;
+  color: #3d3d3d;
+}
+
+/* ---------- Typography ---------- */
+.section-label {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #576b53;
+  background-color: rgba(87, 107, 83, 0.10);
+  border: 1px solid rgba(87, 107, 83, 0.25);
+  padding: 0.25rem 0.875rem;
+  border-radius: 9999px;
+  margin-bottom: 0.875rem;
+}
+
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 600;
+  color: #1a1a1a;
+  line-height: 1.25;
+  margin-bottom: 0.5rem;
+}
+
+/* ---------- Buttons ---------- */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #912c2c;
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.875rem;
+  padding: 0.75rem 1.75rem;
+  border-radius: 9999px;
+  text-decoration: none;
+  transition: background-color 0.25s ease, transform 0.2s ease, box-shadow 0.25s ease;
+  box-shadow: 0 4px 20px rgba(145, 44, 44, 0.25);
+  cursor: pointer;
+  border: none;
+}
+
+.btn-primary:hover {
+  background-color: #6e2020;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 28px rgba(145, 44, 44, 0.35);
+}
+
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: transparent;
+  color: #912c2c;
+  font-weight: 600;
+  font-size: 0.875rem;
+  padding: 0.75rem 1.75rem;
+  border-radius: 9999px;
+  border: 2px solid #912c2c;
+  text-decoration: none;
+  transition: all 0.25s ease;
+  cursor: pointer;
+}
+
+.btn-outline:hover {
+  background-color: #912c2c;
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+/* ---------- Navbar links ---------- */
+.nav-link {
+  color: #3d3d3d;
+  text-decoration: none;
+  font-weight: 500;
+  position: relative;
+  transition: color 0.2s ease;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: #bc8769;
+  border-radius: 2px;
+  transition: width 0.25s ease;
+}
+
+.nav-link:hover {
+  color: #912c2c;
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+/* ---------- Cards (Áreas) ---------- */
+.area-card {
+  background-color: #fff;
+  border: 1px solid #e8e0d5;
+  border-radius: 1.5rem;
+  padding: 1.75rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.area-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
+  border-color: #bc8769;
+}
+
+.area-icon {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 0.875rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ---------- Steps ---------- */
+.step-circle {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 9999px;
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 1.125rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+
+/* ---------- Testimonials ---------- */
+.testimonial-card {
+  background-color: #fff;
+  border: 1px solid #e8e0d5;
+  border-radius: 1.5rem;
+  padding: 1.75rem;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.testimonial-card:hover {
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+}
+
+/* ---------- FAQ ---------- */
+.faq-item {
+  border: 1px solid #e8e0d5;
+  border-radius: 1rem;
+  overflow: hidden;
+  background-color: #fff;
+  transition: box-shadow 0.2s ease;
+}
+
+.faq-item:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+}
+
+.faq-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.5rem;
+  font-weight: 500;
+  font-size: 0.95rem;
+  color: #1a1a1a;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  gap: 1rem;
+  transition: background-color 0.2s;
+}
+
+.faq-btn:hover {
+  background-color: #f7f3ee;
+}
+
+.faq-answer {
+  padding: 0 1.5rem 1.25rem;
+  font-size: 0.9rem;
+  color: #5a5a5a;
+  line-height: 1.75;
+  border-top: 1px solid #f0ebe4;
+}
+
+/* ---------- Form ---------- */
+.form-label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #3d3d3d;
+  margin-bottom: 0.4rem;
+}
+
+.form-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1.5px solid #ddd5c8;
+  border-radius: 0.75rem;
+  font-size: 0.9rem;
+  font-family: 'Inter', sans-serif;
+  color: #3d3d3d;
+  background-color: #faf8f5;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-input::placeholder { color: #b0a89e; }
+
+.form-input:focus {
+  border-color: #576b53;
+  box-shadow: 0 0 0 3px rgba(87, 107, 83, 0.12);
+  background-color: #fff;
+}
+
+/* ---------- Scrollbar ---------- */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #efe9e1; }
+::-webkit-scrollbar-thumb { background: #bc8769; border-radius: 9999px; }
+::-webkit-scrollbar-thumb:hover { background: #912c2c; }
+
+/* ---------- Selection ---------- */
+::selection {
+  background-color: rgba(188, 135, 105, 0.3);
+  color: #912c2c;
+}
+
+/* ---------- Responsive tweaks ---------- */
+@media (max-width: 640px) {
+  .section-title { font-size: 1.75rem; }
+  .faq-btn { font-size: 0.875rem; }
+}
