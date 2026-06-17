@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mensagem Enviada | Entrelinhas Espaço Terapêutico</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/png" href="assets/img/logo.png" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            vinho:     { DEFAULT: '#912c2c', dark: '#6e2020' },
+            verde:     { DEFAULT: '#576b53' },
+            terracota: { DEFAULT: '#bc8769' },
+            creme:     { DEFAULT: '#efe9e1' },
+          },
+          fontFamily: {
+            playfair: ['"Playfair Display"', 'serif'],
+            inter:    ['Inter', 'sans-serif'],
+          },
+        },
+      },
+    }
+  </script>
+</head>
+<body class="font-inter bg-creme min-h-screen flex flex-col items-center justify-center px-6 text-gray-700">
+
+  <div class="text-center max-w-md w-full">
+
+    <img src="assets/img/logo.png" alt="Entrelinhas Espaço Terapêutico" class="w-24 h-24 mx-auto mb-8 object-contain" />
+
+    <div class="w-16 h-16 bg-verde/15 rounded-full flex items-center justify-center mx-auto mb-6">
+      <svg class="w-8 h-8 text-[#576b53]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
+      </svg>
+    </div>
+
+    <h1 class="font-playfair text-3xl text-[#912c2c] font-semibold mb-4">
+      Mensagem enviada!
+    </h1>
+
+    <p class="text-gray-500 leading-relaxed mb-4">
+      Obrigada pelo contato. Em breve entraremos em contato para confirmar o agendamento da sua consulta.
+    </p>
+
+    <p class="text-sm text-gray-400 italic mb-10">
+      "Se fizer sentido para você, estamos aqui."
+    </p>
+
+    <a href="/" class="inline-flex items-center gap-2 bg-[#912c2c] text-white font-semibold px-8 py-3 rounded-full shadow-lg hover:bg-[#6e2020] transition-colors duration-300">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+      </svg>
+      Voltar ao início
+    </a>
+
+  </div>
+
+</body>
+</html>

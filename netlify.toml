@@ -20,8 +20,3 @@
   [headers.values]
     Cache-Control = "public, max-age=0, must-revalidate"
 
-[[redirects]]
-  from = "https://entrelinhas.netlify.app/*"
-  to = "https://www.entrelinhas.com.br/:splat"
-  status = 301
-  force = true

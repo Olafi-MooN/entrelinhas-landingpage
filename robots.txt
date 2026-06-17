@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.entrelinhas.com.br/sitemap.xml
+Sitemap: https://entrelinhas-terapeuta.netlify.app/sitemap.xml
