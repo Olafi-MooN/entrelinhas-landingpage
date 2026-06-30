@@ -6,12 +6,13 @@
 /* ---------- Base ---------- */
 *, *::before, *::after { box-sizing: border-box; }
 
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; overflow-x: hidden; }
 
 body {
   font-family: 'Inter', sans-serif;
   background-color: #efe9e1;
   color: #3d3d3d;
+  overflow-x: hidden;
 }
 
 /* ---------- Typography ---------- */
@@ -251,6 +252,9 @@ body {
 
 /* ---------- Responsive tweaks ---------- */
 @media (max-width: 640px) {
-  .section-title { font-size: 1.75rem; }
-  .faq-btn { font-size: 0.875rem; }
+  .section-title { font-size: 1.6rem; }
+  .faq-btn { font-size: 0.875rem; padding: 1rem 1.25rem; }
+  .area-card { padding: 1.25rem; }
+  .testimonial-card { padding: 1.25rem; }
+  .btn-primary, .btn-outline { font-size: 0.875rem; padding: 0.7rem 1.25rem; }
 }
