@@ -1131,6 +1131,18 @@
     </svg>
   </a>
 
+  <!-- ===================== NAVEGAÇÃO LATERAL POR PONTOS ===================== -->
+  <nav id="section-dots" class="hidden lg:flex fixed right-6 top-1/2 -translate-y-1/2 z-40 flex-col items-center" aria-label="Navegação de seções">
+    <div class="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-px bg-vinho/15"></div>
+    <a href="#sobre" class="dot-thread relative w-2.5 h-2.5 rounded-full" aria-label="Sobre"></a>
+    <a href="#areas" class="dot-thread relative w-2.5 h-2.5 rounded-full" aria-label="Áreas"></a>
+    <a href="#como-funciona" class="dot-thread relative w-2.5 h-2.5 rounded-full" aria-label="Como Funciona"></a>
+    <a href="#equipe" class="dot-thread relative w-2.5 h-2.5 rounded-full" aria-label="Equipe"></a>
+    <a href="#depoimentos" class="dot-thread relative w-2.5 h-2.5 rounded-full" aria-label="Depoimentos"></a>
+    <a href="#faq" class="dot-thread relative w-2.5 h-2.5 rounded-full" aria-label="FAQ"></a>
+    <a href="#contato" class="dot-thread relative w-2.5 h-2.5 rounded-full" aria-label="Contato"></a>
+  </nav>
+
   <!-- ===================== SCRIPTS ===================== -->
   <!-- Alpine.js (para FAQ accordion) -->
   <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -1347,6 +1359,45 @@
       }
       animate();
     })();
+
+    // Navegação lateral por pontos: destaca a seção visível
+    const sectionDots = document.querySelectorAll('.dot-thread');
+    if (sectionDots.length) {
+      const dotSections = Array.from(sectionDots)
+        .map((dot) => document.querySelector(dot.getAttribute('href')))
+        .filter(Boolean);
+
+      const dotObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const id = '#' + entry.target.id;
+            sectionDots.forEach((dot) => {
+              dot.classList.toggle('active', dot.getAttribute('href') === id);
+            });
+          }
+        });
+      }, { rootMargin: '-45% 0px -45% 0px' });
+
+      dotSections.forEach((section) => dotObserver.observe(section));
+    }
+
+    // Botões magnéticos: seguem levemente o cursor
+    document.querySelectorAll('.btn-primary, .btn-outline, .whatsapp-float-btn').forEach((btn) => {
+      btn.addEventListener('mousemove', (e) => {
+        const rect = btn.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+        btn.style.transform = `translate(${x * 0.25}px, ${y * 0.25}px)`;
+      });
+      btn.addEventListener('mouseleave', () => {
+        btn.style.transform = '';
+      });
+    });
+
+    // Título da aba "reage" quando o visitante sai da página
+    const originalTitle = document.title;
+    window.addEventListener('blur', () => { document.title = '🧵 Ainda estamos aqui...'; });
+    window.addEventListener('focus', () => { document.title = originalTitle; });
 
   </script>
 </body>

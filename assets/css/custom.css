@@ -360,6 +360,52 @@ p { text-align: justify; }
   animation: shimmerText 5s linear infinite;
 }
 
+/* Navegação lateral por pontos ("fio" com contas, desktop) */
+#section-dots {
+  gap: 1.1rem;
+}
+.dot-thread {
+  background-color: rgba(145, 44, 44, 0.25);
+  transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+}
+.dot-thread:hover {
+  background-color: rgba(145, 44, 44, 0.55);
+}
+.dot-thread.active {
+  background-color: #912c2c;
+  transform: scale(1.7);
+  box-shadow: 0 0 0 4px rgba(145, 44, 44, 0.15);
+}
+.dot-thread::before {
+  content: attr(aria-label);
+  position: absolute;
+  right: 1.1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.7rem;
+  font-weight: 500;
+  white-space: nowrap;
+  background: #fff;
+  color: #912c2c;
+  padding: 0.2rem 0.7rem;
+  border-radius: 9999px;
+  border: 1px solid #e8e0d5;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  transform: translateY(-50%) translateX(4px);
+}
+.dot-thread:hover::before {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
+}
+
+/* Botões magnéticos: puxam levemente na direção do cursor */
+.btn-primary, .btn-outline, .whatsapp-float-btn {
+  will-change: transform;
+}
+
 /* Revelação com desfoque suave para todos os elementos animados no scroll (AOS) */
 [data-aos] {
   filter: blur(5px);
