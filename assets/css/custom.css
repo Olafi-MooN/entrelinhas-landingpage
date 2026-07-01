@@ -253,6 +253,152 @@ p { text-align: justify; }
   color: #912c2c;
 }
 
+/* ---------- Entrelinhas: motivo de fio e agulha ---------- */
+@keyframes breathe {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.14); opacity: 0.8; }
+}
+.thread-blob { animation: breathe 8s ease-in-out infinite; }
+.thread-blob-delay { animation: breathe 8s ease-in-out infinite; animation-delay: 3s; }
+
+@keyframes threadSway {
+  0%, 100% { transform: rotate(3deg); }
+  50% { transform: rotate(0.5deg); }
+}
+@keyframes threadSwayReverse {
+  0%, 100% { transform: rotate(-2deg); }
+  50% { transform: rotate(-4.5deg); }
+}
+.thread-sway { animation: threadSway 7s ease-in-out infinite; }
+.thread-sway-reverse { animation: threadSwayReverse 7s ease-in-out infinite; }
+
+/* Ícones "costuram" ao passar o mouse */
+.area-icon svg { transition: transform 0.4s ease; }
+.area-card:hover .area-icon svg,
+.step-circle:hover,
+[data-hover-sway]:hover .area-icon svg {
+  transform: rotate(-12deg) scale(1.12);
+}
+.step-circle { transition: transform 0.4s ease; }
+
+/* Divisor de fio elegante: traço em gradiente + agulha que "costura" ao entrar na tela */
+.thread-divider-wrap {
+  position: relative;
+  width: 15rem;
+  height: 2rem;
+}
+
+.thread-divider path {
+  fill: none;
+  stroke: url(#threadGrad);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-dasharray: 8 10;
+  stroke-dashoffset: 340;
+  opacity: 0;
+  transition: stroke-dashoffset 1.8s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.6s ease;
+}
+.thread-divider-wrap.in-view .thread-divider path {
+  stroke-dashoffset: 0;
+  opacity: 1;
+}
+
+.thread-needle {
+  position: absolute;
+  top: 2px;
+  left: -2px;
+  width: 1.1rem;
+  height: 1.1rem;
+  opacity: 0;
+  filter: drop-shadow(0 2px 4px rgba(145, 44, 44, 0.35));
+}
+.thread-divider-wrap.in-view .thread-needle {
+  animation: needleTravel 1.8s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
+
+@keyframes needleTravel {
+  0%   { transform: translate(0, 10px) rotate(-35deg) scale(0.8); opacity: 0; }
+  12%  { opacity: 1; }
+  50%  { transform: translate(112px, -4px) rotate(-15deg) scale(1.05); }
+  100% { transform: translate(224px, 10px) rotate(-35deg) scale(0.8); opacity: 0; }
+}
+
+/* Barra de progresso "fio" no topo, acompanhando a rolagem */
+#scroll-thread {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: 0%;
+  background: linear-gradient(90deg, #912c2c, #bc8769, #576b53);
+  z-index: 60;
+  transition: width 0.1s ease-out;
+}
+
+/* Cards com leve inclinação 3D ao seguir o cursor */
+.area-card, .testimonial-card {
+  will-change: transform;
+}
+
+/* Fio que segue o cursor: só em dispositivos com mouse */
+#thread-cursor { display: none; }
+@media (hover: hover) and (pointer: fine) {
+  #thread-cursor { display: block; }
+}
+
+/* Texto com brilho em degradê (uso pontual, elementos de destaque) */
+@keyframes shimmerText {
+  0% { background-position: 0% 0; }
+  100% { background-position: 200% 0; }
+}
+.shimmer-text {
+  background: linear-gradient(90deg, #912c2c 0%, #bc8769 25%, #576b53 50%, #bc8769 75%, #912c2c 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmerText 5s linear infinite;
+}
+
+/* Revelação com desfoque suave para todos os elementos animados no scroll (AOS) */
+[data-aos] {
+  filter: blur(5px);
+  transition-property: opacity, transform, filter;
+}
+[data-aos].aos-animate {
+  filter: blur(0);
+}
+
+/* Linha do tempo "Como Funciona" desenhada ao rolar */
+.timeline-thread {
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 1.4s ease;
+}
+.timeline-thread.in-view {
+  transform: scaleX(1);
+}
+
+/* Sublinhado tipo ponto-de-costura no menu */
+.nav-link::after {
+  background-image: repeating-linear-gradient(to right, #bc8769 0 6px, transparent 6px 11px);
+  background-color: transparent;
+}
+
+/* Botão WhatsApp flutuante com leve "respiração" */
+@keyframes whatsappPulseRing {
+  0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.45); }
+  100% { box-shadow: 0 0 0 16px rgba(37, 211, 102, 0); }
+}
+.whatsapp-float-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  animation: whatsappPulseRing 2.2s ease-out infinite;
+  pointer-events: none;
+}
+
 /* ---------- Responsive tweaks ---------- */
 @media (max-width: 640px) {
   .section-title { font-size: 1.6rem; }

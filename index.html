@@ -305,9 +305,26 @@
 
 <body class="font-inter bg-creme text-gray-700 antialiased">
 
+  <!-- Definições globais de gradiente (usadas pelos divisores de fio) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <linearGradient id="threadGrad" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="#912c2c" />
+        <stop offset="50%" stop-color="#bc8769" />
+        <stop offset="100%" stop-color="#576b53" />
+      </linearGradient>
+    </defs>
+  </svg>
+
+  <!-- Barra de progresso de rolagem ("fio" no topo) -->
+  <div id="scroll-thread"></div>
+
+  <!-- Fio que segue o cursor (desktop) -->
+  <canvas id="thread-cursor" class="fixed inset-0 pointer-events-none z-[9999]" aria-hidden="true"></canvas>
+
   <!-- ===================== NAVBAR ===================== -->
   <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-transparent">
-    <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+    <div class="relative max-w-6xl mx-auto px-6 py-4 flex items-center justify-center md:justify-between">
       <!-- Logo -->
       <a href="#hero" class="flex items-center">
         <img src="assets/img/perfil/logo.png" alt="Entrelinhas Logo" class="h-16 w-auto max-w-[200px] object-contain" />
@@ -327,7 +344,7 @@
       </ul>
 
       <!-- Mobile Hamburger -->
-      <button id="menu-btn" class="md:hidden p-2 rounded-lg text-vinho" aria-label="Menu">
+      <button id="menu-btn" class="md:hidden p-2 rounded-lg text-vinho absolute right-6 top-1/2 -translate-y-1/2" aria-label="Menu">
         <svg id="icon-open" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
         </svg>
@@ -355,8 +372,8 @@
   <section id="hero" class="relative min-h-screen flex items-center overflow-hidden bg-creme">
     <!-- Decorative blob background -->
     <div class="absolute inset-0 pointer-events-none">
-      <div class="absolute -top-32 -right-32 w-[500px] h-[500px] rounded-full bg-terracota/10 blur-3xl"></div>
-      <div class="absolute bottom-0 -left-32 w-[400px] h-[400px] rounded-full bg-verde/10 blur-3xl"></div>
+      <div class="absolute -top-32 -right-32 w-[500px] h-[500px] rounded-full bg-terracota/10 blur-3xl thread-blob"></div>
+      <div class="absolute bottom-0 -left-32 w-[400px] h-[400px] rounded-full bg-verde/10 blur-3xl thread-blob-delay"></div>
     </div>
 
     <div class="relative max-w-6xl mx-auto px-4 sm:px-6 pt-20 sm:pt-24 md:pt-28 pb-10 md:pb-16">
@@ -409,8 +426,8 @@
         <div class="relative flex justify-center mt-4 md:mt-0" data-aos="fade-left" data-aos-duration="800" data-aos-delay="150">
           <div class="relative w-full max-w-xs sm:max-w-sm md:max-w-md">
             <!-- Frame decoration — oculto no mobile para evitar overflow -->
-            <div class="hidden sm:block absolute -inset-4 rounded-[2.5rem] border-2 border-terracota/30 rotate-3"></div>
-            <div class="hidden sm:block absolute -inset-4 rounded-[2.5rem] border border-verde/20 -rotate-2"></div>
+            <div class="hidden sm:block absolute -inset-4 rounded-[2.5rem] border-2 border-terracota/30 thread-sway"></div>
+            <div class="hidden sm:block absolute -inset-4 rounded-[2.5rem] border border-verde/20 thread-sway-reverse"></div>
             <img
               src="assets/img/perfil/WhatsApp%20Image%202026-06-23%20at%2013.58.46.jpeg"
               alt="Psicólogas Márcia Prates e Franciely Natália no consultório Entrelinhas Espaço Terapêutico em Belo Horizonte"
@@ -426,15 +443,19 @@
         </div>
       </div>
     </div>
+  </section>
 
-    <!-- Scroll indicator -->
-    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce">
-      <span class="text-xs text-gray-400 tracking-widest uppercase">Role para baixo</span>
-      <svg class="w-5 h-5 text-terracota" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+  <div class="relative flex justify-center py-4" aria-hidden="true">
+    <div class="thread-divider-wrap">
+      <svg class="thread-divider absolute inset-0 w-full h-full" viewBox="0 0 240 32" xmlns="http://www.w3.org/2000/svg">
+        <path d="M4 16 C 50 -6, 90 38, 130 16 C 160 2, 190 26, 236 16" />
+      </svg>
+      <svg class="thread-needle" viewBox="0 0 24 24" fill="none" stroke="#912c2c" stroke-width="2.3" stroke-linecap="round">
+        <path d="M4 20 L18 6" />
+        <circle cx="19.3" cy="4.7" r="2" />
       </svg>
     </div>
-  </section>
+  </div>
 
   <!-- ===================== SOBRE ===================== -->
   <section id="sobre" class="py-14 md:py-24 bg-white">
@@ -452,12 +473,12 @@
         />
         <!-- Badge de estatística: posicionamento seguro no mobile -->
         <div class="hidden sm:block absolute -bottom-8 -right-4 bg-creme-light border border-creme-dark rounded-2xl p-5 shadow-lg max-w-[200px]">
-          <p class="text-2xl font-playfair font-bold text-vinho">+15.000</p>
+          <p class="text-2xl font-playfair font-bold text-vinho">+<span class="count-up" data-target="15000">0</span></p>
           <p class="text-sm text-gray-500 mt-1">atendimentos realizados</p>
         </div>
         <!-- Badge mobile: inline, sem overflow -->
         <div class="sm:hidden mt-4 bg-creme-light border border-creme-dark rounded-2xl p-4 shadow-sm text-center">
-          <p class="text-xl font-playfair font-bold text-vinho">+15.000</p>
+          <p class="text-xl font-playfair font-bold text-vinho">+<span class="count-up" data-target="15000">0</span></p>
           <p class="text-xs text-gray-500 mt-1">atendimentos realizados</p>
         </div>
       </div>
@@ -492,7 +513,7 @@
             <p class="font-semibold text-sm text-gray-800">Ética e Sigilo</p>
             <p class="text-xs text-gray-500 mt-1">Comprometimento e transparência</p>
           </div>
-          <div class="bg-creme rounded-2xl p-4 border border-creme-dark">
+          <div class="bg-creme rounded-2xl p-4 border border-creme-dark col-span-2 justify-self-center w-[calc(50%-0.5rem)]">
             <div class="w-8 h-8 bg-terracota/15 rounded-lg flex items-center justify-center mb-3">
               <svg class="w-4 h-4 text-terracota" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
             </div>
@@ -546,7 +567,7 @@
       <div class="text-center mb-10 md:mb-16" data-aos="fade-up" data-aos-duration="600">
         <span class="section-label">Especialidades</span>
         <h2 class="section-title">Áreas de Atendimento</h2>
-        <p class="text-gray-500 max-w-xl mx-auto mt-3">Oferecemos um espaço seguro para quem busca apoio emocional, desenvolvimento pessoal e novas possibilidades de existir e se relacionar.</p>
+        <p class="text-gray-500 max-w-xl mx-auto mt-3 text-center">Oferecemos um espaço seguro para quem busca apoio emocional, desenvolvimento pessoal e novas possibilidades de existir e se relacionar.</p>
       </div>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -585,26 +606,27 @@
           <h3 class="font-playfair text-xl font-semibold text-gray-800 mt-4 mb-2">Avaliação Psicológica</h3>
           <p class="text-sm text-gray-500 leading-relaxed">Para processos de cirurgia bariátrica, vasectomia, laqueadura, concursos e outras finalidades conforme a demanda.</p>
         </div>
-      </div>
-
-      <!-- Card especial: Palestras (destaque diferenciado) -->
-      <div class="mt-6" data-aos="fade-up" data-aos-duration="600" data-aos-delay="80">
-        <div class="bg-vinho/5 border-2 border-vinho/25 rounded-3xl p-8 flex flex-col md:flex-row gap-8 items-start">
-          <div class="flex-1">
-            <div class="area-icon bg-vinho/15 mb-4">
+        <div class="area-card sm:col-span-2 sm:justify-self-center sm:w-[calc(50%-0.5rem)]" data-aos="fade-up" data-aos-duration="600" data-aos-delay="80">
+          <div class="area-icon bg-vinho/15 mb-4">
               <svg class="w-6 h-6 text-vinho" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/></svg>
             </div>
-            <h3 class="font-playfair text-xl font-semibold text-gray-800 mb-2">Palestras empresariais e escolares</h3>
-            <p class="text-sm text-gray-500 leading-relaxed">Oferecemos palestras que desenvolvem competências emocionais, melhoram a comunicação e contribuem para ambientes mais saudáveis em empresas e escolas.</p>
-          </div>
-          <div class="flex-1 bg-white rounded-2xl p-5 border border-creme-dark">
-            <div class="flex items-center gap-2 mb-2">
-              <svg class="w-5 h-5 text-verde flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-              <p class="font-semibold text-sm text-gray-800">Modalidade de Atendimento</p>
-            </div>
-            <p class="text-sm text-gray-500 leading-relaxed">Atendimento Presencial em Belo Horizonte e online para todo o Brasil e brasileiros no exterior por plataformas seguras, garantindo conforto e privacidade.</p>
-          </div>
+          <h3 class="font-playfair text-xl font-semibold text-gray-800 mt-4 mb-2">Palestras empresariais e escolares</h3>
+          <p class="text-sm text-gray-500 leading-relaxed">Oferecemos palestras que desenvolvem competências emocionais, melhoram a comunicação e contribuem para ambientes mais saudáveis em empresas e escolas.</p>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== MODALIDADE DE ATENDIMENTO ===================== -->
+  <section id="modalidade" class="pb-14 md:pb-20 bg-creme">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6" data-aos="fade-up" data-aos-duration="600">
+      <div class="bg-white rounded-3xl border border-creme-dark shadow-sm p-8 md:p-10 text-center">
+        <div class="area-icon bg-verde/10 mx-auto mb-4">
+          <svg class="w-6 h-6 text-verde" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        </div>
+        <span class="section-label">Modalidade de Atendimento</span>
+        <h2 class="section-title text-center">Presencial em BH e Online para todo o Brasil</h2>
+        <p class="text-gray-500 max-w-xl mx-auto mt-3 text-center">Atendimento Presencial em Belo Horizonte e online para todo o Brasil e brasileiros no exterior por plataformas seguras, garantindo conforto e privacidade.</p>
       </div>
     </div>
   </section>
@@ -615,39 +637,39 @@
       <div class="text-center mb-10 md:mb-16" data-aos="fade-up">
         <span class="section-label">O processo</span>
         <h2 class="section-title">Como Funciona o Atendimento</h2>
-        <p class="text-gray-500 max-w-lg mx-auto mt-3">Acreditamos em processos e respeitamos o tempo de cada pessoa. Veja como é fácil começar.</p>
+        <p class="text-gray-500 max-w-lg mx-auto mt-3 text-center">Acreditamos em processos e respeitamos o tempo de cada pessoa. Veja como é fácil começar.</p>
       </div>
 
       <div class="grid md:grid-cols-4 gap-6 relative">
         <!-- Connecting line (desktop) -->
-        <div class="hidden md:block absolute top-10 left-[12.5%] right-[12.5%] h-0.5 bg-gradient-to-r from-vinho/20 via-terracota/40 to-verde/20 z-0"></div>
+        <div class="timeline-thread hidden md:block absolute top-10 left-[12.5%] right-[12.5%] h-0.5 bg-gradient-to-r from-vinho/20 via-terracota/40 to-verde/20 z-0"></div>
 
         <!-- Step 1 -->
         <div class="relative z-10 text-center" data-aos="fade-up" data-aos-delay="0">
           <div class="step-circle bg-vinho text-white mx-auto">1</div>
           <h3 class="font-playfair font-semibold text-gray-800 mt-5 mb-2">Primeiro Contato</h3>
-          <p class="text-sm text-gray-500">Envie uma mensagem pelo WhatsApp ou formulário. Sem burocracia.</p>
+          <p class="text-sm text-gray-500 text-center">Envie uma mensagem pelo WhatsApp ou formulário. Sem burocracia.</p>
         </div>
 
         <!-- Step 2 -->
         <div class="relative z-10 text-center" data-aos="fade-up" data-aos-delay="100">
           <div class="step-circle bg-terracota text-white mx-auto">2</div>
           <h3 class="font-playfair font-semibold text-gray-800 mt-5 mb-2">Agendamento</h3>
-          <p class="text-sm text-gray-500">Escolha dia e horário que funcionem para você (presencial ou online).</p>
+          <p class="text-sm text-gray-500 text-center">Escolha dia e horário que funcionem para você (presencial ou online).</p>
         </div>
 
         <!-- Step 3 -->
         <div class="relative z-10 text-center" data-aos="fade-up" data-aos-delay="200">
           <div class="step-circle bg-verde text-white mx-auto">3</div>
           <h3 class="font-playfair font-semibold text-gray-800 mt-5 mb-2">Primeira Sessão</h3>
-          <p class="text-sm text-gray-500">Um espaço de escuta e acolhimento para entendermos suas necessidades.</p>
+          <p class="text-sm text-gray-500 text-center">Um espaço de escuta e acolhimento para entendermos suas necessidades.</p>
         </div>
 
         <!-- Step 4 -->
         <div class="relative z-10 text-center" data-aos="fade-up" data-aos-delay="300">
           <div class="step-circle bg-vinho text-white mx-auto">4</div>
           <h3 class="font-playfair font-semibold text-gray-800 mt-5 mb-2">Acompanhamento</h3>
-          <p class="text-sm text-gray-500">Sessões semanais com evolução e cuidado contínuos, no seu tempo.</p>
+          <p class="text-sm text-gray-500 text-center">Sessões semanais com evolução e cuidado contínuos, no seu tempo.</p>
         </div>
       </div>
     </div>
@@ -659,7 +681,7 @@
       <div class="text-center mb-10 md:mb-16" data-aos="fade-up">
         <span class="section-label" style="color: #bc8769; background-color: rgba(188,135,105,0.10); border-color: rgba(188,135,105,0.25);">Nossa Equipe</span>
         <h2 class="section-title" style="color: #bc8769;">Profissionais <em class="italic">comprometidos</em></h2>
-        <p class="text-gray-500 max-w-xl mx-auto mt-3">Nossa equipe é formada por psicólogos comprometidos com o cuidado integral, a escuta qualificada e a excelência técnica.</p>
+        <p class="text-gray-500 max-w-xl mx-auto mt-3 text-center">Nossa equipe é formada por psicólogos comprometidos com o cuidado integral, a escuta qualificada e a excelência técnica.</p>
       </div>
 
       <div class="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto">
@@ -669,7 +691,7 @@
             <img src="assets/img/perfil/marcia.jpeg" alt="Márcia Prates" class="w-full h-full object-cover object-top" />
           </div>
           <h3 class="font-playfair text-xl font-semibold text-gray-800 mb-1">Márcia Prates</h3>
-          <p class="text-verde text-sm font-medium tracking-wide mb-2">Psicóloga Técnica Responsável</p>
+          <p class="text-verde text-sm font-medium tracking-wide mb-2 text-center">Psicóloga Técnica Responsável</p>
           <span class="inline-block text-xs bg-creme border border-creme-dark text-gray-500 px-3 py-1 rounded-full">CRP 04/60000</span>
         </div>
 
@@ -679,7 +701,7 @@
             <img src="assets/img/perfil/Franciely.jpeg" alt="Franciely Natália" class="w-full h-full object-cover object-top" />
           </div>
           <h3 class="font-playfair text-xl font-semibold text-gray-800 mb-1">Franciely Natália</h3>
-          <p class="text-verde text-sm font-medium tracking-wide mb-2">Psicóloga Técnica Responsável</p>
+          <p class="text-verde text-sm font-medium tracking-wide mb-2 text-center">Psicóloga Técnica Responsável</p>
           <span class="inline-block text-xs bg-creme border border-creme-dark text-gray-500 px-3 py-1 rounded-full">CRP 04/64243</span>
         </div>
       </div>
@@ -699,22 +721,34 @@
             <img src="assets/img/perfil/RayssaAlves.jpeg" alt="Rayssa Alves" class="w-full h-full object-cover object-top" />
           </div>
           <h3 class="font-playfair text-xl font-semibold text-gray-800 mb-1">Rayssa Alves</h3>
-          <p class="text-verde text-sm font-medium tracking-wide mb-2">Psicóloga Clínica</p>
+          <p class="text-verde text-sm font-medium tracking-wide mb-2 text-center">Psicóloga Clínica</p>
           <span class="inline-block text-xs bg-creme border border-creme-dark text-gray-500 px-3 py-1 rounded-full">CRP 04/82523</span>
         </div>
 
         <!-- Cleide Amorim -->
         <div class="bg-white rounded-3xl p-8 border border-creme-dark shadow-sm text-center" data-aos="fade-up" data-aos-delay="120">
           <div class="w-28 h-28 rounded-full overflow-hidden mx-auto mb-5 border-2 border-creme-dark">
-            <img src="assets/img/perfil/CleideAmorim.jpeg" alt="Cleide Amorim" class="w-full h-full object-fit-cover object-top" />
+            <img src="assets/img/perfil/CleideAmorim.jpeg" alt="Cleide Amorim" class="w-full h-full object-cover object-top" />
           </div>
           <h3 class="font-playfair text-xl font-semibold text-gray-800 mb-1">Cleide Amorim</h3>
-          <p class="text-verde text-sm font-medium tracking-wide mb-2">Psicóloga Clínica</p>
+          <p class="text-verde text-sm font-medium tracking-wide mb-2 text-center">Psicóloga Clínica</p>
           <span class="inline-block text-xs bg-creme border border-creme-dark text-gray-500 px-3 py-1 rounded-full">CRP 04/62551</span>
         </div>
       </div>
     </div>
   </section>
+
+  <div class="relative flex justify-center py-4" aria-hidden="true">
+    <div class="thread-divider-wrap">
+      <svg class="thread-divider absolute inset-0 w-full h-full" viewBox="0 0 240 32" xmlns="http://www.w3.org/2000/svg">
+        <path d="M4 16 C 50 -6, 90 38, 130 16 C 160 2, 190 26, 236 16" />
+      </svg>
+      <svg class="thread-needle" viewBox="0 0 24 24" fill="none" stroke="#912c2c" stroke-width="2.3" stroke-linecap="round">
+        <path d="M4 20 L18 6" />
+        <circle cx="19.3" cy="4.7" r="2" />
+      </svg>
+    </div>
+  </div>
 
   <!-- ===================== DEPOIMENTOS ===================== -->
   <section id="depoimentos" class="py-14 md:py-24 bg-white relative overflow-hidden">
@@ -778,7 +812,7 @@
           <div class="flex mb-4">
             <svg class="w-5 h-5 text-terracota" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg><svg class="w-5 h-5 text-terracota" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg><svg class="w-5 h-5 text-terracota" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg><svg class="w-5 h-5 text-terracota" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg><svg class="w-5 h-5 text-terracota" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
           </div>
-          <p class="text-gray-600 text-sm leading-relaxed italic mb-6">"Minha filha adolescente tem adorado a terapeuta. Vejo grandes evoluções nos comportamentos — hoje ela é muito mais comunicativa e paciente."</p>
+          <p class="text-gray-600 text-sm leading-relaxed italic mb-6">"Minha filha adolescente tem adorado a terapeuta. Vejo grandes evoluções nos comportamentos, hoje ela é muito mais comunicativa e paciente."</p>
           <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-full bg-verde/20 flex items-center justify-center text-verde font-semibold">R</div>
             <div>
@@ -822,7 +856,7 @@
             </svg>
           </button>
           <div x-show="open" x-transition class="faq-answer">
-            A primeira consulta é uma sessão onde o profissional vai te escutar com atenção, compreender o que te levou a buscar terapia e conhecer suas expectativas. Durante a conversa explicamos como funciona o processo terapêutico e alinhamos combinados importantes, para que o acompanhamento aconteça de forma segura, respeitosa e ética. Consideramos tudo que você traz — a escuta é cuidadosa e atenta ao seu contexto, às suas emoções, pensamentos, comportamentos e à expressão corporal.
+            A primeira consulta é uma sessão onde o profissional vai te escutar com atenção, compreender o que te levou a buscar terapia e conhecer suas expectativas. Durante a conversa explicamos como funciona o processo terapêutico e alinhamos combinados importantes, para que o acompanhamento aconteça de forma segura, respeitosa e ética. Consideramos tudo que você traz, a escuta é cuidadosa e atenta ao seu contexto, às suas emoções, pensamentos, comportamentos e à expressão corporal.
           </div>
         </div>
 
@@ -895,24 +929,24 @@
   </section>
 
   <!-- ===================== CTA WHATSAPP ===================== -->
-  <section id="cta-whatsapp" class="py-14 md:py-20 bg-verde relative overflow-hidden">
-    <div class="absolute inset-0 opacity-10 pointer-events-none">
-      <div class="absolute top-0 left-0 w-96 h-96 rounded-full bg-white blur-3xl"></div>
-      <div class="absolute bottom-0 right-0 w-72 h-72 rounded-full bg-white blur-3xl"></div>
+  <section id="cta-whatsapp" class="py-14 md:py-20 bg-gradient-to-br from-terracota/15 via-creme to-verde/10 relative overflow-hidden">
+    <div class="absolute inset-0 opacity-40 pointer-events-none">
+      <div class="absolute top-0 left-0 w-96 h-96 rounded-full bg-terracota/20 blur-3xl thread-blob"></div>
+      <div class="absolute bottom-0 right-0 w-72 h-72 rounded-full bg-verde/20 blur-3xl thread-blob-delay"></div>
     </div>
     <div class="relative max-w-4xl mx-auto px-6 text-center" data-aos="fade-up">
-      <img src="assets/img/perfil/logo.png" alt="Entrelinhas" class="h-16 w-auto max-w-[220px] mx-auto mb-6 opacity-90" />
-      <h2 class="font-playfair text-3xl md:text-4xl text-white font-semibold mb-4">
-        Se fizer sentido para você,<br /><em class="italic">estamos aqui.</em>
+      <img src="assets/img/perfil/logo.png" alt="Entrelinhas" class="h-16 md:h-20 w-auto max-w-[220px] mx-auto mb-6" />
+      <h2 class="font-playfair text-3xl md:text-4xl text-vinho font-semibold mb-4">
+        Se fizer sentido para você,<br /><em class="italic shimmer-text">estamos aqui.</em>
       </h2>
-      <p class="text-white/80 text-lg mb-10 max-w-xl mx-auto">
-        Trabalhamos com ética, cuidado e responsabilidade. Entre em contato pelo WhatsApp — sem julgamentos, sem pressão.
+      <p class="text-gray-600 text-lg mb-10 max-w-xl mx-auto text-center">
+        Trabalhamos com ética, cuidado e responsabilidade. Entre em contato pelo WhatsApp
       </p>
       <a
         href="https://wa.me/5531971326953?text=Olá!%20Gostaria%20de%20agendar%20uma%20consulta%20no%20Entrelinhas%20Espaço%20Terapêutico."
         target="_blank"
         rel="noopener"
-        class="inline-flex items-center gap-3 bg-white text-verde font-semibold text-base px-8 py-4 rounded-full shadow-xl hover:bg-creme transition-all duration-300 hover:scale-105"
+        class="inline-flex items-center gap-3 bg-verde text-white font-semibold text-base px-8 py-4 rounded-full shadow-xl hover:bg-verde-dark transition-all duration-300 hover:scale-105"
       >
         <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
           <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
@@ -987,6 +1021,10 @@
               <input id="phone" name="phone" type="tel" required placeholder="(00) 00000-0000" class="form-input" />
             </div>
             <div>
+              <label class="form-label" for="age">Idade</label>
+              <input id="age" name="age" type="number" min="0" max="120" required placeholder="Sua idade" class="form-input" />
+            </div>
+            <div>
               <label class="form-label" for="email">E-mail</label>
               <input id="email" name="email" type="email" placeholder="seu@email.com" class="form-input" />
             </div>
@@ -1012,8 +1050,7 @@
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
             <span id="btn-text">Agendar Consulta</span>
           </button>
-          <p id="form-success" class="hidden mt-4 text-center text-verde font-medium text-sm">✓ Mensagem enviada! Entraremos em contato em breve.</p>
-          <p id="form-error" class="hidden mt-4 text-center text-red-500 font-medium text-sm">Erro ao enviar. Tente novamente ou entre em contato pelo WhatsApp.</p>
+          <p id="form-success" class="hidden mt-4 text-center text-verde font-medium text-sm">✓ Redirecionando você para o WhatsApp...</p>
         </form>
       </div>
     </div>
@@ -1086,7 +1123,7 @@
     href="https://wa.me/5531971326953?text=Olá!%20Gostaria%20de%20agendar%20uma%20consulta%20no%20Entrelinhas%20Espaço%20Terapêutico."
     target="_blank"
     rel="noopener"
-    class="fixed bottom-6 right-6 z-50 w-14 h-14 bg-[#25D366] rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition-transform duration-300"
+    class="whatsapp-float-btn fixed bottom-6 right-6 z-50 w-14 h-14 bg-[#25D366] rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition-transform duration-300"
     aria-label="WhatsApp"
   >
     <svg class="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 24 24">
@@ -1095,9 +1132,6 @@
   </a>
 
   <!-- ===================== SCRIPTS ===================== -->
-  <!-- EmailJS -->
-  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-
   <!-- Alpine.js (para FAQ accordion) -->
   <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
@@ -1108,42 +1142,34 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
 
   <script>
-    // EmailJS Init
-    emailjs.init('RjrGwxZ1lO3792X9_');
-
     document.getElementById('contact-form').addEventListener('submit', function(e) {
       e.preventDefault();
-      const btn = document.getElementById('submit-btn');
-      const btnText = document.getElementById('btn-text');
       const successMsg = document.getElementById('form-success');
-      const errorMsg = document.getElementById('form-error');
 
-      btn.disabled = true;
-      btnText.textContent = 'Enviando...';
-      successMsg.classList.add('hidden');
-      errorMsg.classList.add('hidden');
+      const name    = document.getElementById('name').value.trim();
+      const phone   = document.getElementById('phone').value.trim();
+      const age     = document.getElementById('age').value.trim();
+      const email   = document.getElementById('email').value.trim();
+      const area    = document.getElementById('area').value.trim();
+      const message = document.getElementById('message').value.trim();
 
-      const templateParams = {
-        name:    document.getElementById('name').value,
-        phone:   document.getElementById('phone').value,
-        email:   document.getElementById('email').value,
-        area:    document.getElementById('area').value,
-        message: document.getElementById('message').value,
-        time:    new Date().toLocaleString('pt-BR'),
-      };
+      let text = 'Olá! Gostaria de agendar uma consulta.\n\n';
+      text += `*Nome:* ${name}\n`;
+      text += `*Telefone:* ${phone}\n`;
+      text += `*Idade:* ${age}\n`;
+      if (email)   text += `*E-mail:* ${email}\n`;
+      if (area)    text += `*Área de interesse:* ${area}\n`;
+      if (message) text += `*Mensagem:* ${message}\n`;
 
-      emailjs.send('service_d0b19fu', 'template_lgpz6vz', templateParams)
-        .then(() => {
-          successMsg.classList.remove('hidden');
-          this.reset();
-          btnText.textContent = 'Agendar Consulta';
-          btn.disabled = false;
-        })
-        .catch(() => {
-          errorMsg.classList.remove('hidden');
-          btnText.textContent = 'Agendar Consulta';
-          btn.disabled = false;
-        });
+      const whatsappUrl = `https://wa.me/5531971326953?text=${encodeURIComponent(text)}`;
+      const win = window.open(whatsappUrl, '_blank');
+      if (!win) {
+        window.location.href = whatsappUrl;
+      }
+
+      successMsg.classList.remove('hidden');
+      this.reset();
+      setTimeout(() => successMsg.classList.add('hidden'), 4000);
     });
 
     // AOS Init
@@ -1153,10 +1179,10 @@
     const navbar = document.getElementById('navbar');
     window.addEventListener('scroll', () => {
       if (window.scrollY > 60) {
-        navbar.classList.add('bg-white/95', 'backdrop-blur-md', 'shadow-sm', 'border-b', 'border-creme-dark');
+        navbar.classList.add('bg-creme', 'shadow-sm');
         navbar.classList.remove('bg-transparent');
       } else {
-        navbar.classList.remove('bg-white/95', 'backdrop-blur-md', 'shadow-sm', 'border-b', 'border-creme-dark');
+        navbar.classList.remove('bg-creme', 'shadow-sm');
         navbar.classList.add('bg-transparent');
       }
     });
@@ -1191,6 +1217,136 @@
         }
       });
     });
+
+    // Entrelinhas: costura os "fios" (dividers e linha do tempo) ao entrar na tela
+    const threadObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          threadObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.4 });
+
+    document.querySelectorAll('.thread-divider-wrap, .timeline-thread').forEach((el) => threadObserver.observe(el));
+
+    // Barra de progresso de rolagem ("fio" no topo)
+    const scrollThread = document.getElementById('scroll-thread');
+    function updateScrollThread() {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      const pct = max > 0 ? (window.scrollY / max) * 100 : 0;
+      scrollThread.style.width = pct + '%';
+    }
+    window.addEventListener('scroll', updateScrollThread);
+    updateScrollThread();
+
+    // Inclinação 3D suave nos cards ao seguir o cursor
+    document.querySelectorAll('.area-card, .testimonial-card').forEach((card) => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const rotateX = ((y / rect.height) - 0.5) * -6;
+        const rotateY = ((x / rect.width) - 0.5) * 6;
+        card.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px)`;
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = '';
+      });
+    });
+
+    // Contador animado (estatística "+15.000 atendimentos")
+    function animateCount(el) {
+      const target = parseInt(el.dataset.target, 10);
+      const duration = 1400;
+      const start = performance.now();
+      function tick(now) {
+        const progress = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        el.textContent = Math.floor(eased * target).toLocaleString('pt-BR');
+        if (progress < 1) requestAnimationFrame(tick);
+        else el.textContent = target.toLocaleString('pt-BR');
+      }
+      requestAnimationFrame(tick);
+    }
+    const countObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          animateCount(entry.target);
+          countObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.5 });
+    document.querySelectorAll('.count-up').forEach((el) => countObserver.observe(el));
+
+    // Fio que segue o cursor (só em desktop, com mouse)
+    (function () {
+      const canvas = document.getElementById('thread-cursor');
+      if (!canvas || !window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+
+      const ctx = canvas.getContext('2d');
+      const POINTS = 16;
+      const EASE = 0.35;
+      const colors = ['#912c2c', '#bc8769', '#576b53'];
+
+      let mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+      let points = Array.from({ length: POINTS }, () => ({ x: mouse.x, y: mouse.y }));
+      let hasMoved = false;
+
+      function resize() {
+        const dpr = window.devicePixelRatio || 1;
+        canvas.width = window.innerWidth * dpr;
+        canvas.height = window.innerHeight * dpr;
+        canvas.style.width = window.innerWidth + 'px';
+        canvas.style.height = window.innerHeight + 'px';
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      }
+      window.addEventListener('resize', resize);
+      resize();
+
+      window.addEventListener('mousemove', (e) => {
+        mouse.x = e.clientX;
+        mouse.y = e.clientY;
+        hasMoved = true;
+      });
+      document.addEventListener('mouseleave', () => { hasMoved = false; });
+
+      function animate() {
+        points[0].x += (mouse.x - points[0].x) * EASE;
+        points[0].y += (mouse.y - points[0].y) * EASE;
+        for (let i = 1; i < points.length; i++) {
+          points[i].x += (points[i - 1].x - points[i].x) * EASE;
+          points[i].y += (points[i - 1].y - points[i].y) * EASE;
+        }
+
+        ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+
+        if (hasMoved) {
+          ctx.lineJoin = 'round';
+          ctx.lineCap = 'round';
+          for (let i = 1; i < points.length; i++) {
+            const p0 = points[i - 1];
+            const p1 = points[i];
+            const t = i / points.length;
+            ctx.beginPath();
+            ctx.moveTo(p0.x, p0.y);
+            ctx.lineTo(p1.x, p1.y);
+            ctx.lineWidth = Math.max(0.6, 3.2 * (1 - t));
+            ctx.strokeStyle = colors[i % colors.length];
+            ctx.globalAlpha = 1 - t * 0.85;
+            ctx.stroke();
+          }
+          ctx.globalAlpha = 1;
+          ctx.beginPath();
+          ctx.arc(points[0].x, points[0].y, 3, 0, Math.PI * 2);
+          ctx.fillStyle = '#912c2c';
+          ctx.fill();
+        }
+
+        requestAnimationFrame(animate);
+      }
+      animate();
+    })();
 
   </script>
 </body>
