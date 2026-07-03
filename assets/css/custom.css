@@ -346,6 +346,45 @@ p { text-align: justify; }
   #thread-cursor { display: block; }
 }
 
+/* Cursor personalizado: círculo com bolinha central (só em dispositivos com mouse) */
+#cursor-ring, #cursor-dot { display: none; }
+@media (hover: hover) and (pointer: fine) {
+  body, a, button, input, textarea, select, [role="button"] {
+    cursor: none;
+  }
+
+  #cursor-ring, #cursor-dot {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 10000;
+    border-radius: 9999px;
+  }
+
+  #cursor-ring {
+    width: 34px;
+    height: 34px;
+    border: 1.5px solid #912c2c;
+    transition: width 0.25s ease, height 0.25s ease, border-color 0.25s ease, background-color 0.25s ease, opacity 0.2s ease;
+  }
+
+  #cursor-dot {
+    width: 6px;
+    height: 6px;
+    background-color: #912c2c;
+    transition: opacity 0.2s ease;
+  }
+
+  #cursor-ring.cursor-hover {
+    width: 50px;
+    height: 50px;
+    border-color: #bc8769;
+    background-color: rgba(145, 44, 44, 0.08);
+  }
+}
+
 /* Texto com brilho em degradê (uso pontual, elementos de destaque) */
 @keyframes shimmerText {
   0% { background-position: 0% 0; }

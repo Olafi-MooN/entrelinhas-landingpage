@@ -322,6 +322,10 @@
   <!-- Fio que segue o cursor (desktop) -->
   <canvas id="thread-cursor" class="fixed inset-0 pointer-events-none z-[9999]" aria-hidden="true"></canvas>
 
+  <!-- Cursor personalizado: círculo com bolinha central (desktop) -->
+  <div id="cursor-ring" aria-hidden="true"></div>
+  <div id="cursor-dot" aria-hidden="true"></div>
+
   <!-- ===================== NAVBAR ===================== -->
   <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-transparent">
     <div class="relative max-w-6xl mx-auto px-6 py-4 flex items-center justify-center md:justify-between">
@@ -1359,6 +1363,47 @@ Atendemos de forma particular. Fornecemos recibo para reembolso em planos de sa�
         requestAnimationFrame(animate);
       }
       animate();
+    })();
+
+    // Cursor personalizado: círculo com bolinha central (só em desktop, com mouse)
+    (function () {
+      if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+
+      const ring = document.getElementById('cursor-ring');
+      const dot = document.getElementById('cursor-dot');
+      if (!ring || !dot) return;
+
+      let mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+      let ringPos = { x: mouse.x, y: mouse.y };
+
+      window.addEventListener('mousemove', (e) => {
+        mouse.x = e.clientX;
+        mouse.y = e.clientY;
+        dot.style.transform = `translate(${mouse.x}px, ${mouse.y}px) translate(-50%, -50%)`;
+      });
+
+      document.addEventListener('mouseleave', () => {
+        ring.style.opacity = '0';
+        dot.style.opacity = '0';
+      });
+      document.addEventListener('mouseenter', () => {
+        ring.style.opacity = '1';
+        dot.style.opacity = '1';
+      });
+
+      function animateRing() {
+        ringPos.x += (mouse.x - ringPos.x) * 0.18;
+        ringPos.y += (mouse.y - ringPos.y) * 0.18;
+        ring.style.transform = `translate(${ringPos.x}px, ${ringPos.y}px) translate(-50%, -50%)`;
+        requestAnimationFrame(animateRing);
+      }
+      animateRing();
+
+      const hoverTargets = 'a, button, input, textarea, select, [role="button"], .dot-thread';
+      document.querySelectorAll(hoverTargets).forEach((el) => {
+        el.addEventListener('mouseenter', () => ring.classList.add('cursor-hover'));
+        el.addEventListener('mouseleave', () => ring.classList.remove('cursor-hover'));
+      });
     })();
 
     // Navegação lateral por pontos: destaca a seção visível
