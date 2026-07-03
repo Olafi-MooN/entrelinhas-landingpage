@@ -484,6 +484,16 @@ p { text-align: justify; }
   pointer-events: none;
 }
 
+/* Espaçamento superior do título do hero: só em mobile (abaixo do breakpoint sm do Tailwind) */
+@media (max-width: 640px) {
+  .hero-title-wrap { padding-top: 2rem; }
+  #para-quem { margin-top: 2rem; }
+  #sobre .container-sobre > *:first-child { order: 2; }
+  #sobre .diferenciais-cards p { text-align: start; }
+  #sobre .container-sobre > *:last-child  { order: 1; }
+  #para-quem p { text-align: start; }
+}
+
 /* ---------- Responsive tweaks ---------- */
 @media (max-width: 640px) {
   .section-title { font-size: 1.6rem; }
