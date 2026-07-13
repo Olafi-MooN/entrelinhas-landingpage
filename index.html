@@ -4,6 +4,19 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z603NJJRQK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-Z603NJJRQK');
+  </script>
+
+  <!-- Google reCAPTCHA v3 -->
+  <script src="https://www.google.com/recaptcha/api.js?render=6Ld-glEtAAAAAN6DkBemOTueImBlD7WzTHeFxzHJ"></script>
+
   <!-- ===== SEO PRIMARY ===== -->
   <title>Clínica de Psicologia Entrelinhas Espaço Terapêutico | Psicoterapia em Belo Horizonte e Online</title>
   <meta name="description" content="Clínica de Psicologia Entrelinhas Espaço Terapêutico — atendimento presencial em Belo Horizonte (Rua Arthur de Sá, 131, Sala 309) e online para todo o Brasil e exterior. Psicoterapia para adultos, idosos, crianças, adolescentes e casais, avaliação psicológica e palestras. (31) 97132-6953 | entrelinhas856@gmail.com | CRP PJ 04/04461." />
@@ -281,6 +294,26 @@
 
   <!-- Custom CSS -->
   <link rel="stylesheet" href="assets/css/custom.css" />
+  
+  <!-- reCAPTCHA Badge Customization -->
+  <style>
+    /* Mover badge do reCAPTCHA para dentro do formulário */
+    .grecaptcha-badge {
+      visibility: visible !important;
+      display: block !important;
+      position: relative !important;
+      bottom: auto !important;
+      right: auto !important;
+      left: auto !important;
+      margin: 16px auto 0 auto !important;
+      width: fit-content !important;
+      opacity: 0.9;
+      transition: opacity 0.3s;
+    }
+    .grecaptcha-badge:hover {
+      opacity: 1;
+    }
+  </style>
 
   <!-- Google Tag Manager -->
   <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -1039,11 +1072,16 @@ Atendemos de forma particular. Fornecemos recibo para reembolso em planos de sa�
             </div>
             <div>
               <label class="form-label" for="age">Idade</label>
-              <input id="age" name="age" type="number" min="0" max="120" required placeholder="Sua idade" class="form-input" />
+              <input id="age" name="age" type="text" inputmode="numeric" required placeholder="Ex: 25" class="form-input" />
             </div>
-            <div>
-              <label class="form-label" for="email">E-mail</label>
-              <input id="email" name="email" type="email" placeholder="seu@email.com" class="form-input" />
+            <div class="relative">
+              <label class="form-label" for="email">E-mail <span class="text-gray-400 font-normal">(opcional)</span></label>
+              <input id="email" name="email" type="email" placeholder="seu@email.com" class="form-input pr-10" />
+              <span id="email-icon" class="absolute right-3 top-[42px] hidden">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                </svg>
+              </span>
             </div>
             <div>
               <label class="form-label" for="area">Área de interesse</label>
@@ -1063,12 +1101,20 @@ Atendemos de forma particular. Fornecemos recibo para reembolso em planos de sa�
               <label class="form-label" for="message">Mensagem <span class="text-gray-400 font-normal">(opcional)</span></label>
               <textarea id="message" name="message" rows="4" placeholder="Conte um pouco sobre o que você está buscando..." class="form-input resize-none"></textarea>
             </div>
+            
+            <!-- Honeypot field - campo oculto para detectar bots -->
+            <input type="text" name="website" id="website" style="position: absolute; left: -9999px; width: 1px; height: 1px;" tabindex="-1" autocomplete="off">
           </div>
           <button type="submit" id="submit-btn" class="btn-primary w-full mt-6 py-4 text-base justify-center">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
             <span id="btn-text">Agendar Consulta</span>
           </button>
           <p id="form-success" class="hidden mt-4 text-center text-verde font-medium text-sm">✓ Redirecionando você para o WhatsApp...</p>
+          <p class="mt-3 text-center text-xs text-gray-400">
+            Este site é protegido pelo reCAPTCHA e aplicam-se a 
+            <a href="https://policies.google.com/privacy" target="_blank" class="underline hover:text-gray-600">Política de Privacidade</a> e os 
+            <a href="https://policies.google.com/terms" target="_blank" class="underline hover:text-gray-600">Termos de Serviço</a> do Google.
+          </p>
         </form>
       </div>
     </div>
@@ -1171,293 +1217,7 @@ Atendemos de forma particular. Fornecemos recibo para reembolso em planos de sa�
   <!-- Flowbite -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
 
-  <script>
-    document.getElementById('contact-form').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const successMsg = document.getElementById('form-success');
-
-      const name    = document.getElementById('name').value.trim();
-      const phone   = document.getElementById('phone').value.trim();
-      const age     = document.getElementById('age').value.trim();
-      const email   = document.getElementById('email').value.trim();
-      const area    = document.getElementById('area').value.trim();
-      const message = document.getElementById('message').value.trim();
-
-      let text = 'Olá! Gostaria de agendar uma consulta.\n\n';
-      text += `*Nome:* ${name}\n`;
-      text += `*Telefone:* ${phone}\n`;
-      text += `*Idade:* ${age}\n`;
-      if (email)   text += `*E-mail:* ${email}\n`;
-      if (area)    text += `*Área de interesse:* ${area}\n`;
-      if (message) text += `*Mensagem:* ${message}\n`;
-
-      const whatsappUrl = `https://wa.me/5531971326953?text=${encodeURIComponent(text)}`;
-      const win = window.open(whatsappUrl, '_blank');
-      if (!win) {
-        window.location.href = whatsappUrl;
-      }
-
-      successMsg.classList.remove('hidden');
-      this.reset();
-      setTimeout(() => successMsg.classList.add('hidden'), 4000);
-    });
-
-    // AOS Init
-    AOS.init({ once: true, easing: 'ease-out-cubic' });
-
-    // Navbar scroll effect
-    const navbar = document.getElementById('navbar');
-    window.addEventListener('scroll', () => {
-      if (window.scrollY > 60) {
-        navbar.classList.add('bg-creme', 'shadow-sm');
-        navbar.classList.remove('bg-transparent');
-      } else {
-        navbar.classList.remove('bg-creme', 'shadow-sm');
-        navbar.classList.add('bg-transparent');
-      }
-    });
-
-    // Mobile menu toggle
-    const menuBtn = document.getElementById('menu-btn');
-    const mobileMenu = document.getElementById('mobile-menu');
-    const iconOpen = document.getElementById('icon-open');
-    const iconClose = document.getElementById('icon-close');
-
-    menuBtn.addEventListener('click', () => {
-      mobileMenu.classList.toggle('hidden');
-      iconOpen.classList.toggle('hidden');
-      iconClose.classList.toggle('hidden');
-    });
-
-    function closeMobileMenu() {
-      mobileMenu.classList.add('hidden');
-      iconOpen.classList.remove('hidden');
-      iconClose.classList.add('hidden');
-    }
-
-    // Smooth scroll
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function(e) {
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-          e.preventDefault();
-          const offset = 80;
-          const top = target.getBoundingClientRect().top + window.scrollY - offset;
-          window.scrollTo({ top, behavior: 'smooth' });
-        }
-      });
-    });
-
-    // Entrelinhas: costura os "fios" (dividers e linha do tempo) ao entrar na tela
-    const threadObserver = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('in-view');
-          threadObserver.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.4 });
-
-    document.querySelectorAll('.thread-divider-wrap, .timeline-thread').forEach((el) => threadObserver.observe(el));
-
-    // Barra de progresso de rolagem ("fio" no topo)
-    const scrollThread = document.getElementById('scroll-thread');
-    function updateScrollThread() {
-      const max = document.documentElement.scrollHeight - window.innerHeight;
-      const pct = max > 0 ? (window.scrollY / max) * 100 : 0;
-      scrollThread.style.width = pct + '%';
-    }
-    window.addEventListener('scroll', updateScrollThread);
-    updateScrollThread();
-
-    // Inclinação 3D suave nos cards ao seguir o cursor
-    document.querySelectorAll('.area-card, .testimonial-card').forEach((card) => {
-      card.addEventListener('mousemove', (e) => {
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        const rotateX = ((y / rect.height) - 0.5) * -6;
-        const rotateY = ((x / rect.width) - 0.5) * 6;
-        card.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px)`;
-      });
-      card.addEventListener('mouseleave', () => {
-        card.style.transform = '';
-      });
-    });
-
-    // Contador animado (estatística "+15.000 atendimentos")
-    function animateCount(el) {
-      const target = parseInt(el.dataset.target, 10);
-      const duration = 1400;
-      const start = performance.now();
-      function tick(now) {
-        const progress = Math.min((now - start) / duration, 1);
-        const eased = 1 - Math.pow(1 - progress, 3);
-        el.textContent = Math.floor(eased * target).toLocaleString('pt-BR');
-        if (progress < 1) requestAnimationFrame(tick);
-        else el.textContent = target.toLocaleString('pt-BR');
-      }
-      requestAnimationFrame(tick);
-    }
-    const countObserver = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          animateCount(entry.target);
-          countObserver.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.5 });
-    document.querySelectorAll('.count-up').forEach((el) => countObserver.observe(el));
-
-    // Fio que segue o cursor (só em desktop, com mouse)
-    (function () {
-      const canvas = document.getElementById('thread-cursor');
-      if (!canvas || !window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
-
-      const ctx = canvas.getContext('2d');
-      const POINTS = 16;
-      const EASE = 0.35;
-      const colors = ['#912c2c', '#bc8769', '#576b53'];
-
-      let mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
-      let points = Array.from({ length: POINTS }, () => ({ x: mouse.x, y: mouse.y }));
-      let hasMoved = false;
-
-      function resize() {
-        const dpr = window.devicePixelRatio || 1;
-        canvas.width = window.innerWidth * dpr;
-        canvas.height = window.innerHeight * dpr;
-        canvas.style.width = window.innerWidth + 'px';
-        canvas.style.height = window.innerHeight + 'px';
-        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      }
-      window.addEventListener('resize', resize);
-      resize();
-
-      window.addEventListener('mousemove', (e) => {
-        mouse.x = e.clientX;
-        mouse.y = e.clientY;
-        hasMoved = true;
-      });
-      document.addEventListener('mouseleave', () => { hasMoved = false; });
-
-      function animate() {
-        points[0].x += (mouse.x - points[0].x) * EASE;
-        points[0].y += (mouse.y - points[0].y) * EASE;
-        for (let i = 1; i < points.length; i++) {
-          points[i].x += (points[i - 1].x - points[i].x) * EASE;
-          points[i].y += (points[i - 1].y - points[i].y) * EASE;
-        }
-
-        ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-
-        if (hasMoved) {
-          ctx.lineJoin = 'round';
-          ctx.lineCap = 'round';
-          for (let i = 1; i < points.length; i++) {
-            const p0 = points[i - 1];
-            const p1 = points[i];
-            const t = i / points.length;
-            ctx.beginPath();
-            ctx.moveTo(p0.x, p0.y);
-            ctx.lineTo(p1.x, p1.y);
-            ctx.lineWidth = Math.max(0.6, 3.2 * (1 - t));
-            ctx.strokeStyle = colors[i % colors.length];
-            ctx.globalAlpha = 1 - t * 0.85;
-            ctx.stroke();
-          }
-          ctx.globalAlpha = 1;
-          ctx.beginPath();
-          ctx.arc(points[0].x, points[0].y, 3, 0, Math.PI * 2);
-          ctx.fillStyle = '#912c2c';
-          ctx.fill();
-        }
-
-        requestAnimationFrame(animate);
-      }
-      animate();
-    })();
-
-    // Cursor personalizado: círculo com bolinha central (só em desktop, com mouse)
-    (function () {
-      if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
-
-      const ring = document.getElementById('cursor-ring');
-      const dot = document.getElementById('cursor-dot');
-      if (!ring || !dot) return;
-
-      let mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
-      let ringPos = { x: mouse.x, y: mouse.y };
-
-      window.addEventListener('mousemove', (e) => {
-        mouse.x = e.clientX;
-        mouse.y = e.clientY;
-        dot.style.transform = `translate(${mouse.x}px, ${mouse.y}px) translate(-50%, -50%)`;
-      });
-
-      document.addEventListener('mouseleave', () => {
-        ring.style.opacity = '0';
-        dot.style.opacity = '0';
-      });
-      document.addEventListener('mouseenter', () => {
-        ring.style.opacity = '1';
-        dot.style.opacity = '1';
-      });
-
-      function animateRing() {
-        ringPos.x += (mouse.x - ringPos.x) * 0.18;
-        ringPos.y += (mouse.y - ringPos.y) * 0.18;
-        ring.style.transform = `translate(${ringPos.x}px, ${ringPos.y}px) translate(-50%, -50%)`;
-        requestAnimationFrame(animateRing);
-      }
-      animateRing();
-
-      const hoverTargets = 'a, button, input, textarea, select, [role="button"], .dot-thread';
-      document.querySelectorAll(hoverTargets).forEach((el) => {
-        el.addEventListener('mouseenter', () => ring.classList.add('cursor-hover'));
-        el.addEventListener('mouseleave', () => ring.classList.remove('cursor-hover'));
-      });
-    })();
-
-    // Navegação lateral por pontos: destaca a seção visível
-    const sectionDots = document.querySelectorAll('.dot-thread');
-    if (sectionDots.length) {
-      const dotSections = Array.from(sectionDots)
-        .map((dot) => document.querySelector(dot.getAttribute('href')))
-        .filter(Boolean);
-
-      const dotObserver = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const id = '#' + entry.target.id;
-            sectionDots.forEach((dot) => {
-              dot.classList.toggle('active', dot.getAttribute('href') === id);
-            });
-          }
-        });
-      }, { rootMargin: '-45% 0px -45% 0px' });
-
-      dotSections.forEach((section) => dotObserver.observe(section));
-    }
-
-    // Botões magnéticos: seguem levemente o cursor
-    document.querySelectorAll('.btn-primary, .btn-outline, .whatsapp-float-btn').forEach((btn) => {
-      btn.addEventListener('mousemove', (e) => {
-        const rect = btn.getBoundingClientRect();
-        const x = e.clientX - rect.left - rect.width / 2;
-        const y = e.clientY - rect.top - rect.height / 2;
-        btn.style.transform = `translate(${x * 0.25}px, ${y * 0.25}px)`;
-      });
-      btn.addEventListener('mouseleave', () => {
-        btn.style.transform = '';
-      });
-    });
-
-    // Título da aba "reage" quando o visitante sai da página
-    const originalTitle = document.title;
-    window.addEventListener('blur', () => { document.title = '🧵 Ainda estamos aqui...'; });
-    window.addEventListener('focus', () => { document.title = originalTitle; });
-
-  </script>
+  <!-- Módulos ES6 da aplicação -->
+  <script type="module" src="assets/js/main.js"></script>
 </body>
 </html>
